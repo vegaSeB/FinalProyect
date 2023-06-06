@@ -13,7 +13,7 @@ public class Parte {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer Id;
+	private Integer id;
 	
 	private String codigo;
 	private String descripcion;
@@ -27,10 +27,10 @@ public class Parte {
 	private String inmov;
 	
 	public Integer getId() {
-		return Id;
+		return id;
 	}
 	public void setId(Integer id) {
-		Id = id;
+		this.id = id;
 	}
 	public String getCodigo() {
 		return codigo;
