@@ -31,13 +31,13 @@ import jakarta.transaction.Transactional;
 public class ParteController {
 
 	@Autowired
-	ParteRepository parrep;
+	private ParteRepository parrep;
 
 	@Autowired
-	VehiculoRepository autorep;
+	private VehiculoRepository autorep;
 
 	@Autowired
-	PartesBaseRepository pbrep;
+	private PartesBaseRepository pbrep;
 
 	@PostMapping
 	public ResponseEntity<String> agregar(@RequestParam String placaa, @RequestParam String codigo) {
@@ -79,7 +79,7 @@ public class ParteController {
 	}
 	
 	@GetMapping("/buscar")
-	public ResponseEntity<Parte> buscar(@RequestParam String placav){
+	public ResponseEntity<Parte> buscar(@RequestParam String placav, @RequestParam String codigo){
 		
 		Optional<Vehiculo> found = autorep.findByPlaca(placav);
 		
@@ -87,16 +87,27 @@ public class ParteController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		
-		Optional<Parte> part = parrep.findByIdv(found.get());
-		if(!part.isPresent()) {
+		List<Parte> part = parrep.findByIdv(found.get());
+		
+		if(part.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(part.get());
 		
+		int i = 0;
+		boolean aux = false;
+		
+		while(i < part.size() && !aux) {
+			if(part.get(i).getCodigo().equals(codigo)) {
+				aux = true;
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(part.get(i));
+			}
+			i++;
+		}
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 	
 	@PostMapping("/update")
-	public ResponseEntity<String> update(@RequestParam String placa1, @RequestParam String codigo,@RequestParam String placa2) {
+	public ResponseEntity<String> update(@RequestParam String placa1, @RequestParam String codigo1,@RequestParam String codigo,@RequestParam String placa2) {
 
 		Optional<Vehiculo> comp = autorep.findByPlaca(placa1);
 		
@@ -104,12 +115,23 @@ public class ParteController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro");
 		}
 		
-		Optional<Parte> up = parrep.findByIdv(comp.get());
-		if(!up.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro");
+		List<Parte> part = parrep.findByIdv(comp.get());
+		
+		if(part.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
 		
-		parrep.delete(up.get());
+		int i = 0;
+		boolean aux = false;
+		
+		while(i < part.size() && !aux) {
+			if(part.get(i).getCodigo().equals(codigo)) {
+				aux = true;
+			}
+			i++;
+		}
+		
+		parrep.delete(part.get(i-1));
 		
 		Optional<PartesBase> pb = pbrep.findByCodigo(codigo);
 
@@ -135,7 +157,7 @@ public class ParteController {
 	}
 	
 	@GetMapping("/eliminar")
-	public ResponseEntity<String> eliminar(@RequestParam String placa){
+	public ResponseEntity<String> eliminar(@RequestParam String placa, @RequestParam String codigo){
 		
 		Optional<Vehiculo> comp = autorep.findByPlaca(placa);
 		
@@ -143,12 +165,23 @@ public class ParteController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro");
 		}
 		
-		Optional<Parte> del = parrep.findByIdv(comp.get());
+		List<Parte> del = parrep.findByIdv(comp.get());
 		
-		if(!del.isPresent()) {
+		if(del.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontro");		
 		}
-		parrep.delete(del.get());
+		
+		int i = 0;
+		boolean aux = false;
+		
+		while(i < del.size() && !aux) {
+			if(del.get(i).getCodigo().equals(codigo)) {
+				aux = true;
+			}
+			i++;
+		}
+		
+		parrep.delete(del.get(i-1));
 		return ResponseEntity.status(HttpStatus.FOUND).body("Eliminado");
 		
 	}

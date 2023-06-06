@@ -10,12 +10,12 @@ import co.edu.unbosque.SebastianVega_Prog2.model.Vehiculo;
 
 public interface ParteRepository extends CrudRepository<Parte,Integer>{
 
-	public Optional<Parte> findById(Integer Id);
+	public Optional<Parte> findById(Integer id);
 	
 	public Optional<Parte> findByCodigo(String codigo);
 	
 	public List<Parte> findAll();
 	
-	public Optional<Parte> findByIdv(Vehiculo idv);
+	public List<Parte> findByIdv(Vehiculo idv);
 	
 }

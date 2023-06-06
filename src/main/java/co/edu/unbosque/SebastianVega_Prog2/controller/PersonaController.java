@@ -27,7 +27,7 @@ import jakarta.transaction.Transactional;
 public class PersonaController {
 	
 	@Autowired
-	PersonaRepository perrep;
+	private PersonaRepository perrep;
 	
 	
 	@PostMapping

@@ -23,7 +23,7 @@
 	<h1 class="d-block p-2 text-bg-secondary text-center">Division de
 		movilidad alcaldia</h1>
 	<nav
-		class="navbar navbar-expand-lg bg-dark border border-dark-subtle rounded-3">
+		class="navbar navbar-expand-lg bg-info-subtle border border-dark-subtle rounded-3">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="#">Menu</a>
 			<button class="navbar-toggler" type="button"
@@ -66,6 +66,14 @@
 							<li><a class="dropdown-item" href="parte-eliminar">Eliminar</a></li>
 							<li><a class="dropdown-item" href="parte-lista">Listar</a></li>
 						</ul></li>
+						<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#" role="button"
+						data-bs-toggle="dropdown" aria-expanded="false"> PDFs</a>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" href="pdf/partesP">Partes por persona</a></li>
+							<li><a class="dropdown-item" href="pdf/partes">Parte registradas</a></li>
+							<li><a class="dropdown-item" href="pdf/vehiculo">Vehiculos por persona</a></li>
+						</ul></li>
 				</ul>
 			</div>
 		</div>
@@ -85,6 +93,12 @@
 					placeholder="Placa del vehiculo">
 			</div>
 			<br />
+			<div class="input-group input-group-lg">
+				<input type="text" class="form-control" name="codigo1"
+					aria-label="Sizing example input"
+					aria-describedby="inputGroup-sizing-lg"
+					placeholder="Codigo del parte">
+			</div>
 			<div class="input-group input-group-lg">
 				<input type="text" class="form-control" name="codigo"
 					aria-label="Sizing example input"

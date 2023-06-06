@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import javax.swing.filechooser.FileSystemView;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,13 +52,15 @@ public class PDFController {
 	ParteRepository parrep;
 	
 	@GetMapping("/vehiculos")
-	public void createPDFVehiculos() {
+	public ResponseEntity<String> createPDFVehiculos() {
 		
 		try {
 			Document doc = new Document();
 			
+			
+			
 			OutputStream outputStream = 
-					new FileOutputStream(new File("Vehiculos_Personas.pdf"));
+					new FileOutputStream(new File(FileSystemView.getFileSystemView().getHomeDirectory() + "/Vehiculos_Personas.pdf"));
 			
 			PdfWriter.getInstance(doc, outputStream);
 			
@@ -67,12 +73,13 @@ public class PDFController {
 			doc.add(table);
 			doc.close();
 	        outputStream.close();
-	 
-	        System.out.println("Pdf created successfully.");
+	        
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body("Archivo creado en el escritorio");
 		
 	}
 	private void añadirCabezalV(PdfPTable table) {
@@ -103,13 +110,13 @@ public class PDFController {
 	}
 	
 	@GetMapping("/partesP")
-	public void createPDFPartesP() {
+	public ResponseEntity<String> createPDFPartesP() {
 		
 		try {
 			Document doc = new Document();
 			
 			OutputStream outputStream = 
-					new FileOutputStream(new File("Partes_Personas.pdf"));
+					new FileOutputStream(new File(FileSystemView.getFileSystemView().getHomeDirectory() + "/Partes_Personas.pdf"));
 			
 			PdfWriter.getInstance(doc, outputStream);
 			
@@ -122,12 +129,13 @@ public class PDFController {
 			doc.add(table);
 			doc.close();
 	        outputStream.close();
-	 
-	        System.out.println("Pdf created successfully.");
+	        
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body("Archivo creado en el escritorio");
 		
 	}
 	
@@ -155,11 +163,13 @@ public class PDFController {
 		
 		for(Vehiculo ve:placas) {
 			
-			Optional<Parte> par = parrep.findByIdv(ve);
+			List<Parte> par = parrep.findByIdv(ve);
 			
-			if(par.isPresent()) {
-				codigos += par.get().getCodigo() + "\n\n";
-				costos += par.get().getMulta() + "\n";
+			if(!par.isEmpty()) {
+				for(Parte p:par) {
+				codigos += p.getCodigo() + "\n\n";
+				costos += p.getMulta() + "\n";
+				}
 			}
 			
 		}
@@ -171,13 +181,13 @@ public class PDFController {
 	}
 	
 	@GetMapping("/partes")
-	public void createPDFPartes() {
+	public ResponseEntity<String> createPDFPartes() {
 		
 		try {
 			Document doc = new Document();
 			
 			OutputStream outputStream = 
-					new FileOutputStream(new File("Partes.pdf"));
+					new FileOutputStream(new File(FileSystemView.getFileSystemView().getHomeDirectory() + "/Partes.pdf"));
 			
 			PdfWriter.getInstance(doc, outputStream);
 			
@@ -195,12 +205,13 @@ public class PDFController {
 			doc.add(table);
 			doc.close();
 	        outputStream.close();
-	 
-	        System.out.println("Pdf created successfully.");
+	        
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body("Archivo creado en el escritorio");
 		
 	}
 	

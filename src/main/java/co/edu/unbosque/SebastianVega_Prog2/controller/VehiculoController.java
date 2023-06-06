@@ -29,10 +29,10 @@ import jakarta.transaction.Transactional;
 public class VehiculoController {
 
 	@Autowired
-	VehiculoRepository verep;
+	private VehiculoRepository verep;
 
 	@Autowired
-	PersonaRepository perrep;
+	private PersonaRepository perrep;
 
 	@PostMapping
 	public ResponseEntity<String> agregar(@RequestParam String placa, @RequestParam Integer cedulad) {
